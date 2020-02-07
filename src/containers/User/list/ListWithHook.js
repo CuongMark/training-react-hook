@@ -8,7 +8,7 @@ function UserList() {
     useEffect(() => {
        let ignore = false;
        async function fetchData() {
-           const {data} = await axios.get('https://jsonplaceholder.typicode.com/posts/1/comments');
+           const {data} = await axios.get('https://jsonplaceholder.typicode.com/posts/100/comments');
            if (!ignore) setPosts(data);
        }
        fetchData();
@@ -30,21 +30,9 @@ function UserList() {
     };
 
     const handlerSave = (data) => {
-        let isUpdate = false;
-        const newPosts = posts.map(post => {
-            if (post.id === data.id) {
-                isUpdate = true;
-                return data
-            }
-            return post
-        });
-        if (!isUpdate) {
-            newPosts.push(data)
-        }
-        setShowEditPopup(false);
-        setPosts(newPosts);
-        axios.post('https://jsonplaceholder.typicode.com/posts', newPosts)
-            .then(response=> {
+        axios.post('https://jsonplaceholder.typicode.com/posts', data)
+            .then(response => {
+                console.log(response);
                 console.log('post successfully')
             }).catch( error => {
                 console.log(error)
@@ -56,9 +44,7 @@ function UserList() {
             <h2>USER MANAGEMENT</h2>
             <button className="btn btn-dark" onClick={togglePopup}>Add New Employee</button>
             {showEditPopup ? <AddUserForm handlerFormSave={handlerSave} data={editingPost}/>:null}
-
             <Table striped bordered hover>
-                <thead className="thead-light">
                 <tr>
                     <th/>
                     <th>UserId</th>
@@ -67,11 +53,10 @@ function UserList() {
                     <th>Body</th>
                     <th>Actions</th>
                 </tr>
-                </thead>
                 {
                     posts.length ?
-                        posts.map((post)=>
-                            <tr key = {post.id}>
+                        posts.map((post, index)=>
+                            <tr key = {index}>
                                 <td><input className="custom-checkbox" value={post.id} type="checkbox"/></td>
                                 <td>{post.id}</td>
                                 <td>{post.name}</td>
