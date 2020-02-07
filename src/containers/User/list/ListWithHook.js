@@ -1,9 +1,20 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {Table} from 'react-bootstrap';
+import axios from 'axios';
 import AddUserForm from "../Add/FormWithHookAndCreateRef";
 
 function UserList() {
     const [posts, setPosts] = useState([]);
+    useEffect(() => {
+       let ignore = false;
+       async function fetchData() {
+           const {data} = await axios.get('https://jsonplaceholder.typicode.com/posts/1/comments');
+           if (!ignore) setPosts(data);
+       }
+       fetchData();
+       return () => {ignore = true}
+    }, []);
+
     const [showEditPopup, setShowEditPopup] = useState(false);
     const [editingPost, setEditingPost] = useState({});
 
@@ -32,6 +43,12 @@ function UserList() {
         }
         setShowEditPopup(false);
         setPosts(newPosts);
+        axios.post('https://jsonplaceholder.typicode.com/posts', newPosts)
+            .then(response=> {
+                console.log('post successfully')
+            }).catch( error => {
+                console.log(error)
+            })
     };
 
     return (
@@ -59,7 +76,7 @@ function UserList() {
                                 <td>{post.id}</td>
                                 <td>{post.name}</td>
                                 <td>{post.email}</td>
-                                <td>{post.introduce}</td>
+                                <td>{post.body}</td>
                                 <td width= "15%">
                                     <button className="btn btn-primary" onClick={() => editHandle(post.id)}>Edit</button>
                                     <button className="btn btn-danger" onClick={() => deleteHandle(post.id)}>Delete</button>

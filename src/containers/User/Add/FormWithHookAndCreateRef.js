@@ -1,11 +1,11 @@
 import React, { useState, createRef } from 'react';
 import Modal from 'react-bootstrap/Modal'
 
-function AddUserForm({handlerFormSave, data: {id, name, email, introduce}}) {
+function AddUserForm({handlerFormSave, data: {id, name, email, body}}) {
     const userIdRef = createRef();
     const nameRef = createRef();
     const emailRef = createRef();
-    const introduceRef = createRef();
+    const bodyRef = createRef();
 
     const onsubmitHandler = (e) => {
         e.preventDefault();
@@ -13,7 +13,7 @@ function AddUserForm({handlerFormSave, data: {id, name, email, introduce}}) {
             id: userIdRef.current.value,
             name: nameRef.current.value,
             email: emailRef.current.value,
-            introduce: introduceRef.current.value
+            body: bodyRef.current.value
         };
         handlerFormSave(data);
         return false;
@@ -36,7 +36,7 @@ function AddUserForm({handlerFormSave, data: {id, name, email, introduce}}) {
                         <input type="text" placeholder="Email" defaultValue={email} ref={emailRef}/>
                     </div><br/>
                     <div>Body:
-                        <input type="text" placeholder="Body" defaultValue={introduce} ref={introduceRef}/>
+                        <input type="text" placeholder="Body" defaultValue={body} ref={bodyRef}/>
                     </div><br/>
                     <input type="submit" value="Save" className= " btn btn-primary" />
                 </form>
