@@ -1,4 +1,4 @@
-import React, { useState, createRef } from 'react';
+import React, { createRef } from 'react';
 import Modal from 'react-bootstrap/Modal'
 
 function AddUserForm({handlerFormSave, data: {id, name, email, body}}) {
