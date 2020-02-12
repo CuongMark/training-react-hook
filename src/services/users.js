@@ -27,7 +27,7 @@ export const updateUser = async (data) => {
 };
 export const deleteUser = async (id) => {
     try {
-        return await axios.delete('/user', {id})
+        return await axios.delete('user/' + id)
         // TODO check case permission denied
     } catch (ex) {
         throw new Error('delete user error')
